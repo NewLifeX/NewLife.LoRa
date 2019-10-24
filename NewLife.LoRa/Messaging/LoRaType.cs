@@ -1,27 +1,27 @@
 ﻿using System;
 
-namespace NewLife.MQTT.Messaging
+namespace NewLife.LoRa.Messaging
 {
     /// <summary>消息类型</summary>
-    public enum MqttType : Byte
+    public enum LoRaType : Byte
     {
-        ///// <summary>保留</summary>
-        //Reserved = 0,
+        /// <summary>推数据</summary>
+        PushData = 0,
 
-        /// <summary>客户端请求连接服务端</summary>
-        Connect = 1,
+        /// <summary>推数据确认</summary>
+        PushAck = 1,
 
-        /// <summary>连接报文确认</summary>
-        ConnAck = 2,
+        /// <summary>拉数据</summary>
+        PullData = 2,
 
-        /// <summary>发布消息</summary>
-        Publish = 3,
+        /// <summary>拉数据响应</summary>
+        PullResp = 3,
 
-        /// <summary>QoS 1消息发布收到确认</summary>
-        PubAck = 4,
+        /// <summary>拉数据确认</summary>
+        PullAck = 4,
 
-        /// <summary>发布收到（保证交付第一步）</summary>
-        PubRec = 5,
+        /// <summary>发送确认</summary>
+        TxAck = 5,
 
         /// <summary>发布释放（保证交付第二步）</summary>
         PubRel = 6,

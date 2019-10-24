@@ -55,5 +55,11 @@
       <Version>8.3.2019.923</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewLife.LoRa\NewLife.LoRa.csproj">
+      <Project>{3996763a-9b51-4636-8656-f7bb6af2d371}</Project>
+      <Name>NewLife.LoRa</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System;
 using NewLife.Agent;
 using NewLife.Log;
-using NewLife.MQTT;
+using NewLife.LoRa;
 
 namespace NewLife.MQTTServer
 {
@@ -13,20 +13,20 @@ namespace NewLife.MQTTServer
         {
             public MyService()
             {
-                ServiceName = "MqttServer";
-                DisplayName = "MQTT服务器";
+                ServiceName = "LoRaServer";
+                DisplayName = "LoRa服务器";
             }
 
-            private MqttServer _Server;
+            private LoRaServer _Server;
             protected override void StartWork(String reason)
             {
                 // 配置
                 var set = Setting.Current;
 
                 // 服务器
-                var svr = new MqttServer()
+                var svr = new LoRaServer()
                 {
-                    Port=set.Port,
+                    Port = set.Port,
                     Log = XTrace.Log,
                 };
 

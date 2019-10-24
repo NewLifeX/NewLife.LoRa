@@ -5,22 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using NewLife.Net;
 
-namespace NewLife.MQTT
+namespace NewLife.LoRa
 {
     /// <summary>MQTT服务端</summary>
-    public class MqttServer : NetServer<MqttSession>
+    public class LoRaServer : NetServer<LoRaSession>
     {
         /// <summary>启动</summary>
         protected override void OnStart()
         {
-            Add(new MqttCodec());
+            //Add(new MqttCodec());
 
             base.OnStart();
         }
     }
 
     /// <summary>会话</summary>
-    public class MqttSession : NetSession
+    public class LoRaSession : NetSession
     {
 
     }
