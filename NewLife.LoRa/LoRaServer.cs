@@ -32,9 +32,11 @@ namespace NewLife.LoRa
             var msg = new LoRaMessage();
             msg.Read(e.Packet.GetStream(), null);
 
-            WriteLog("{0:X4} {1}", msg.Token, msg.Payload.ToStr());
+            WriteLog("{0,-9}<= {1}", msg.Command, msg.Payload?.ToStr());
 
             var rs = msg.CreateReply();
+
+            WriteLog("{0,-9}=> {1}", rs.Command, rs.Payload?.ToStr());
 
             Send(rs.ToPacket());
         }
