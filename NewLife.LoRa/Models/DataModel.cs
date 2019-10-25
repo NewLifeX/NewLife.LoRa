@@ -7,8 +7,8 @@ using System.Xml.Serialization;
 
 namespace NewLife.LoRa.Models
 {
-    /// <summary>节点包</summary>
-    public class NodePacket
+    /// <summary>数据包</summary>
+    public class DataModel
     {
         #region 属性
         /// <summary>UTC时间</summary>
@@ -67,6 +67,9 @@ namespace NewLife.LoRa.Models
         /// <summary>数据速率</summary>
         [XmlElement("data")]
         public String Data { get; set; }
+        #endregion
+
+        #region 方法
         #endregion
     }
 }
