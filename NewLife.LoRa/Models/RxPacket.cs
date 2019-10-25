@@ -8,8 +8,8 @@ using NewLife.Serialization;
 
 namespace NewLife.LoRa.Models
 {
-    /// <summary>数据包</summary>
-    public class DataModel
+    /// <summary>接收数据包</summary>
+    public class RxPacket
     {
         #region 属性
         /// <summary>UTC时间</summary>
@@ -45,7 +45,7 @@ namespace NewLife.LoRa.Models
         [XmlElement("modu")]
         public String Module { get; set; }
 
-        /// <summary>数据速率</summary>
+        /// <summary>数据速率。SF12BW125</summary>
         [XmlElement("datr")]
         public String DataRate { get; set; }
 
@@ -65,7 +65,7 @@ namespace NewLife.LoRa.Models
         [XmlElement("size")]
         public Int32 Length { get; set; }
 
-        /// <summary>数据速率</summary>
+        /// <summary>数据</summary>
         [XmlElement("data")]
         public String Data { get; set; }
         #endregion
@@ -74,17 +74,17 @@ namespace NewLife.LoRa.Models
         /// <summary>读取状态数据</summary>
         /// <param name="data"></param>
         /// <returns>是否成功</returns>
-        public static DataModel[] Read(Object data)
+        public static RxPacket[] Read(Object data)
         {
             var list = data as IList<Object>;
-            if (list == null) return new DataModel[0];
+            if (list == null) return new RxPacket[0];
 
-            var rs = new List<DataModel>();
+            var rs = new List<RxPacket>();
             foreach (var item in list)
             {
                 if (item is IDictionary<String, Object> dic)
                 {
-                    var model = JsonHelper.Convert<DataModel>(dic);
+                    var model = JsonHelper.Convert<RxPacket>(dic);
 
                     if (dic["time"] is String st && st.EndsWithIgnoreCase(" UTC")) model.Time = model.Time.ToLocalTime();
 

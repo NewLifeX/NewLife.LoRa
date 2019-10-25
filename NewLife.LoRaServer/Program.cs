@@ -55,7 +55,8 @@ namespace NewLife.LORAServer
             private void Test()
             {
                 //var str = \"{\\"stat\\":{\\"time\\":\\"2019-10-25 07:05:33 UTC\\",\\"lati\\":\\"31.231013\\",\\"long\\":\\"121.200607\\",\\"alti\\":\\"30.200000\\",\\"rxnb\\":0,\\"rxok\\":0,\\"rxfw\\":0,\\"ackr\\":100.0,\\"dwnb\\":0,\\"txnb\\":0,\\"batt\\":0,\\"poe\\":0,\\"net\\":1,\\"traffic\\":780539002,\\"ver\\":\\"V3.0.864.862.868_Release\\"}}\";
-                var str = "{\"rxpk\":[{\"tmst\":196287580,\"chan\":5,\"rfch\":1,\"freq\":474.100000,\"stat\":1,\"modu\":\"LORA\",\"datr\":\"SF12BW125\",\"codr\":\"4/5\",\"lsnr\":-12.5,\"rssi\":-124,\"size\":50,\"data\":\"gHMAEHCADwsB3P7NADg1Rsj2FLImBtz/9e3hVNzniwoMGUhlyC4KI8Lsvt1VKSuSyVM=\"}]}";
+                //var str = "{\"rxpk\":[{\"tmst\":196287580,\"chan\":5,\"rfch\":1,\"freq\":474.100000,\"stat\":1,\"modu\":\"LORA\",\"datr\":\"SF12BW125\",\"codr\":\"4/5\",\"lsnr\":-12.5,\"rssi\":-124,\"size\":50,\"data\":\"gHMAEHCADwsB3P7NADg1Rsj2FLImBtz/9e3hVNzniwoMGUhlyC4KI8Lsvt1VKSuSyVM=\"}]}";
+                var str = "{\"txpk\":{\"imme\":true,\"freq\":864.123456,\"rfch\":0,\"powe\":14,\"modu\":\"LORA\",\"datr\":\"SF11BW125\",\"codr\":\"4/6\",\"ipol\":false,\"size\":32,\"data\":\"H3P3N2i9qc4yt7rK7ldqoeCVJGBybzPY5h1Dd7P7p8v\"}}";
                 var js = new JsonParser(str).Decode() as IDictionary<String, Object>;
                 //var st = JsonHelper.Convert<StatModel>(js[\"stat\"]);
 
@@ -64,8 +65,8 @@ namespace NewLife.LORAServer
                 var st = StatModel.Read(js["stat"]);
                 if (st != null) Console.WriteLine(st.ToJson(true));
 
-                var dt = DataModel.Read(js["rxpk"]);
-                if (dt != null)
+                var dt = RxPacket.Read(js["rxpk"]);
+                if (dt.Length > 0)
                 {
                     Console.WriteLine(dt.ToJson(true));
                     if (!dt[0].Data.IsNullOrEmpty())
@@ -74,6 +75,9 @@ namespace NewLife.LORAServer
                         Console.WriteLine(dt[0].Data.ToBase64().ToStr());
                     }
                 }
+
+                var tx = TxPacket.Read(js["txpk"]);
+                if (tx != null) Console.WriteLine(tx.ToJson(true));
             }
         }
     }
