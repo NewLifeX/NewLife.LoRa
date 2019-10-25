@@ -19,7 +19,7 @@ namespace NewLife.LoRa.Messaging
         public UInt16 Token { get; set; }
 
         /// <summary>命令。PUSH_DATA=0/PUSH_ACK=2</summary>
-        public Byte Command { get; set; }
+        public LoRaType Command { get; set; }
 
         /// <summary>网关MAC地址</summary>
         public UInt64 Mac { get; set; }
@@ -42,7 +42,7 @@ namespace NewLife.LoRa.Messaging
         {
             Version = (Byte)stream.ReadByte();
             Token = stream.ReadBytes(2).ToUInt16();
-            Command = (Byte)stream.ReadByte();
+            Command = (LoRaType)stream.ReadByte();
             Mac = stream.ReadBytes(8).ToUInt64();
 
             Payload = stream.ReadBytes();
@@ -57,7 +57,7 @@ namespace NewLife.LoRa.Messaging
         {
             stream.WriteByte(Version);
             stream.Write(Token.GetBytes());
-            stream.Write(Command);
+            stream.Write((Byte)Command);
             stream.Write(Mac.GetBytes());
 
             Payload?.CopyTo(stream);
@@ -80,6 +80,34 @@ namespace NewLife.LoRa.Messaging
         #endregion
 
         #region 辅助
+        /// <summary>创建响应消息</summary>
+        /// <returns></returns>
+        public LoRaMessage CreateReply()
+        {
+            var rs = new LoRaMessage
+            {
+                //Version = Version,
+                Token = Token,
+            };
+
+            switch (Command)
+            {
+                case LoRaType.PushData: rs.Command = LoRaType.PushAck; break;
+                case LoRaType.PushAck:
+                    break;
+                case LoRaType.PullData: rs.Command = LoRaType.PullAck; break;
+                case LoRaType.PullResp:
+                    break;
+                case LoRaType.PullAck:
+                    break;
+                case LoRaType.TxAck:
+                    break;
+                default:
+                    break;
+            }
+
+            return rs;
+        }
         #endregion
     }
 }

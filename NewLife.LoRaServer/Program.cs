@@ -3,7 +3,7 @@ using NewLife.Agent;
 using NewLife.Log;
 using NewLife.LoRa;
 
-namespace NewLife.MQTTServer
+namespace NewLife.LORAServer
 {
     class Program
     {

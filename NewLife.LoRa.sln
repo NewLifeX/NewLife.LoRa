@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewLife.LoRa", "NewLife.LoRa\NewLife.LoRa.csproj", "{3996763A-9B51-4636-8656-F7BB6AF2D371}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewLife.LoRaServer", "NewLife.LoRaServer\NewLife.LoRaServer.csproj", "{B044012F-E9EF-402B-BCB2-D946361B2743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LORAServer", "NewLife.LoRaServer\LORAServer.csproj", "{B044012F-E9EF-402B-BCB2-D946361B2743}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
