@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using NewLife.Agent;
+using NewLife.Data;
 using NewLife.Log;
 using NewLife.LoRa;
+using NewLife.LoRa.Messaging;
 using NewLife.LoRa.Models;
 using NewLife.Serialization;
 
@@ -55,8 +57,8 @@ namespace NewLife.LORAServer
             private void Test()
             {
                 //var str = \"{\\"stat\\":{\\"time\\":\\"2019-10-25 07:05:33 UTC\\",\\"lati\\":\\"31.231013\\",\\"long\\":\\"121.200607\\",\\"alti\\":\\"30.200000\\",\\"rxnb\\":0,\\"rxok\\":0,\\"rxfw\\":0,\\"ackr\\":100.0,\\"dwnb\\":0,\\"txnb\\":0,\\"batt\\":0,\\"poe\\":0,\\"net\\":1,\\"traffic\\":780539002,\\"ver\\":\\"V3.0.864.862.868_Release\\"}}\";
-                //var str = "{\"rxpk\":[{\"tmst\":196287580,\"chan\":5,\"rfch\":1,\"freq\":474.100000,\"stat\":1,\"modu\":\"LORA\",\"datr\":\"SF12BW125\",\"codr\":\"4/5\",\"lsnr\":-12.5,\"rssi\":-124,\"size\":50,\"data\":\"gHMAEHCADwsB3P7NADg1Rsj2FLImBtz/9e3hVNzniwoMGUhlyC4KI8Lsvt1VKSuSyVM=\"}]}";
-                var str = "{\"txpk\":{\"imme\":true,\"freq\":864.123456,\"rfch\":0,\"powe\":14,\"modu\":\"LORA\",\"datr\":\"SF11BW125\",\"codr\":\"4/6\",\"ipol\":false,\"size\":32,\"data\":\"H3P3N2i9qc4yt7rK7ldqoeCVJGBybzPY5h1Dd7P7p8v\"}}";
+                var str = "{\"rxpk\":[{\"tmst\":196287580,\"chan\":5,\"rfch\":1,\"freq\":474.100000,\"stat\":1,\"modu\":\"LORA\",\"datr\":\"SF12BW125\",\"codr\":\"4/5\",\"lsnr\":-12.5,\"rssi\":-124,\"size\":50,\"data\":\"gHMAEHCADwsB3P7NADg1Rsj2FLImBtz/9e3hVNzniwoMGUhlyC4KI8Lsvt1VKSuSyVM=\"}]}";
+                //var str = "{\"txpk\":{\"imme\":true,\"freq\":864.123456,\"rfch\":0,\"powe\":14,\"modu\":\"LORA\",\"datr\":\"SF11BW125\",\"codr\":\"4/6\",\"ipol\":false,\"size\":32,\"data\":\"H3P3N2i9qc4yt7rK7ldqoeCVJGBybzPY5h1Dd7P7p8v\"}}";
                 var js = new JsonParser(str).Decode() as IDictionary<String, Object>;
                 //var st = JsonHelper.Convert<StatModel>(js[\"stat\"]);
 
@@ -69,10 +71,18 @@ namespace NewLife.LORAServer
                 if (dt.Length > 0)
                 {
                     Console.WriteLine(dt.ToJson(true));
-                    if (!dt[0].Data.IsNullOrEmpty())
+
+                    var dp = dt[0];
+                    if (!dp.Data.IsNullOrEmpty())
                     {
-                        Console.WriteLine(dt[0].Data.ToBase64().ToHex("-"));
-                        Console.WriteLine(dt[0].Data.ToBase64().ToStr());
+                        Packet pk = dp.Data.ToBase64();
+                        Console.WriteLine(pk.ToHex());
+                        Console.WriteLine(pk.ToStr());
+
+                        var pm = new PHYMessage();
+                        pm.Read(pk.GetStream(), null);
+
+                        Console.WriteLine(pm.ToJson(true));
                     }
                 }
 
