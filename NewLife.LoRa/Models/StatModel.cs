@@ -12,7 +12,7 @@ namespace NewLife.LoRa.Models
         /// <summary>UTC时间</summary>
         /// <remarks>2013-03-31T16:21:17.528002Z</remarks>
         [XmlElement("time")]
-        public DateTime UTCTime { get; set; }
+        public DateTime Time { get; set; }
 
         /// <summary>经度</summary>
         [XmlElement("lati")]
@@ -75,21 +75,16 @@ namespace NewLife.LoRa.Models
 
         #region 方法
         /// <summary>读取状态数据</summary>
-        /// <param name="stat"></param>
+        /// <param name="data"></param>
         /// <returns>是否成功</returns>
-        public static StatModel Read(Object stat)
+        public static StatModel Read(Object data)
         {
-            var dic = stat as IDictionary<String, Object>;
+            var dic = data as IDictionary<String, Object>;
             if (dic == null) return null;
-
-            //var js = new JsonReader();
-            //js.ToObject(dic, null, this);
-
-            //return true;
 
             var model = JsonHelper.Convert<StatModel>(dic);
 
-            if (dic["time"] is String st && st.EndsWithIgnoreCase(" UTC")) model.UTCTime = model.UTCTime.ToLocalTime();
+            if (dic["time"] is String st && st.EndsWithIgnoreCase(" UTC")) model.Time = model.Time.ToLocalTime();
 
             return model;
         }

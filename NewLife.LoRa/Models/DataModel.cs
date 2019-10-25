@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using NewLife.Serialization;
 
 namespace NewLife.LoRa.Models
 {
@@ -14,7 +15,7 @@ namespace NewLife.LoRa.Models
         /// <summary>UTC时间</summary>
         /// <remarks>2013-03-31T16:21:17.528002Z</remarks>
         [XmlElement("time")]
-        public String UTCTime { get; set; }
+        public DateTime Time { get; set; }
 
         /// <summary>GPS时间。1980年1月6日以来毫秒数</summary>
         [XmlElement("tmms")]
@@ -57,7 +58,7 @@ namespace NewLife.LoRa.Models
         public Int32 RSSI { get; set; }
 
         /// <summary>Lora SNR ratio in dB</summary>
-        [XmlElement("isnr")]
+        [XmlElement("lsnr")]
         public Double Ratio { get; set; }
 
         /// <summary>负载数据长度</summary>
@@ -70,6 +71,29 @@ namespace NewLife.LoRa.Models
         #endregion
 
         #region 方法
+        /// <summary>读取状态数据</summary>
+        /// <param name="data"></param>
+        /// <returns>是否成功</returns>
+        public static DataModel[] Read(Object data)
+        {
+            var list = data as IList<Object>;
+            if (list == null) return new DataModel[0];
+
+            var rs = new List<DataModel>();
+            foreach (var item in list)
+            {
+                if (item is IDictionary<String, Object> dic)
+                {
+                    var model = JsonHelper.Convert<DataModel>(dic);
+
+                    if (dic["time"] is String st && st.EndsWithIgnoreCase(" UTC")) model.Time = model.Time.ToLocalTime();
+
+                    rs.Add(model);
+                }
+            }
+
+            return rs.ToArray();
+        }
         #endregion
     }
 }

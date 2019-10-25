@@ -54,14 +54,26 @@ namespace NewLife.LORAServer
 
             private void Test()
             {
-                var stat = "{\"stat\":{\"time\":\"2019-10-25 07:05:33 UTC\",\"lati\":\"31.231013\",\"long\":\"121.200607\",\"alti\":\"30.200000\",\"rxnb\":0,\"rxok\":0,\"rxfw\":0,\"ackr\":100.0,\"dwnb\":0,\"txnb\":0,\"batt\":0,\"poe\":0,\"net\":1,\"traffic\":780539002,\"ver\":\"V3.0.864.862.868_Release\"}}";
-                var js = new JsonParser(stat).Decode() as IDictionary<String, Object>;
-                //var st = JsonHelper.Convert<StatModel>(js["stat"]);
+                //var str = \"{\\"stat\\":{\\"time\\":\\"2019-10-25 07:05:33 UTC\\",\\"lati\\":\\"31.231013\\",\\"long\\":\\"121.200607\\",\\"alti\\":\\"30.200000\\",\\"rxnb\\":0,\\"rxok\\":0,\\"rxfw\\":0,\\"ackr\\":100.0,\\"dwnb\\":0,\\"txnb\\":0,\\"batt\\":0,\\"poe\\":0,\\"net\\":1,\\"traffic\\":780539002,\\"ver\\":\\"V3.0.864.862.868_Release\\"}}\";
+                var str = "{\"rxpk\":[{\"tmst\":196287580,\"chan\":5,\"rfch\":1,\"freq\":474.100000,\"stat\":1,\"modu\":\"LORA\",\"datr\":\"SF12BW125\",\"codr\":\"4/5\",\"lsnr\":-12.5,\"rssi\":-124,\"size\":50,\"data\":\"gHMAEHCADwsB3P7NADg1Rsj2FLImBtz/9e3hVNzniwoMGUhlyC4KI8Lsvt1VKSuSyVM=\"}]}";
+                var js = new JsonParser(str).Decode() as IDictionary<String, Object>;
+                //var st = JsonHelper.Convert<StatModel>(js[\"stat\"]);
 
                 //Console.WriteLine(st.ToJson(true));
 
                 var st = StatModel.Read(js["stat"]);
                 if (st != null) Console.WriteLine(st.ToJson(true));
+
+                var dt = DataModel.Read(js["rxpk"]);
+                if (dt != null)
+                {
+                    Console.WriteLine(dt.ToJson(true));
+                    if (!dt[0].Data.IsNullOrEmpty())
+                    {
+                        Console.WriteLine(dt[0].Data.ToBase64().ToHex("-"));
+                        Console.WriteLine(dt[0].Data.ToBase64().ToStr());
+                    }
+                }
             }
         }
     }
