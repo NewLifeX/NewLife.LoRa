@@ -47,6 +47,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Messaging\DataMessage.cs" />
+    <Compile Remove="Messaging\JoinMessage.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NewLife.Core" Version="8.3.2019.923" />
   </ItemGroup>
 

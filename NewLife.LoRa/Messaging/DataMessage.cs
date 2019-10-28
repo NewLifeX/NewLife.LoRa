@@ -5,6 +5,7 @@ using NewLife.Log;
 
 namespace NewLife.LoRa.Messaging
 {
+    /// <summary>数据消息</summary>
     public class DataMessage
     {
         #region 数据包格式
@@ -420,32 +421,32 @@ namespace NewLife.LoRa.Messaging
             return true;
         }
 
-        /// <summary>合并消息, Payload 不能被合并</summary>
-        /// <param name="msg"></param>
-        /// <returns>是否合并成功</returns>
-        public Boolean Merge(LoraData msg)
-        {
-            // 乙方不存在就扔
-            if (msg == null) return false;
+        ///// <summary>合并消息, Payload 不能被合并</summary>
+        ///// <param name="msg"></param>
+        ///// <returns>是否合并成功</returns>
+        //public Boolean Merge(LoraData msg)
+        //{
+        //    // 乙方不存在就扔
+        //    if (msg == null) return false;
 
-            if ((Payload != null) && (msg.Payload != null))
-            {
-                // Payload 不能被合并
-                if ((Payload.Length != 0) && (msg.Payload.Length != 0)) return false;
-            }
+        //    if ((Payload != null) && (msg.Payload != null))
+        //    {
+        //        // Payload 不能被合并
+        //        if ((Payload.Length != 0) && (msg.Payload.Length != 0)) return false;
+        //    }
 
-            // 合并 Payload
-            if ((Payload == null) || (Payload.Length == 0))
-            {
-                Payload = msg.Payload;
-                FPort = msg.Port;
-            }
+        //    // 合并 Payload
+        //    if ((Payload == null) || (Payload.Length == 0))
+        //    {
+        //        Payload = msg.Payload;
+        //        FPort = msg.Port;
+        //    }
 
-            // ACK判断乙方即可
-            if (msg.NeedAck) ACK = true;
+        //    // ACK判断乙方即可
+        //    if (msg.NeedAck) ACK = true;
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>输出基本消息信息</summary>
         /// <returns></returns>

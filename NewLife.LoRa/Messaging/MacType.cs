@@ -10,27 +10,27 @@ namespace NewLife.LoRa.Messaging
     public enum MacType : Byte
     {
         /// <summary>加网请求</summary>
-        JoinRequest = 0x00,
+        JoinRequest = 0b_0000,
 
         /// <summary>加网通过</summary>
-        JoinAccept = 0x20,
+        JoinAccept = 0b_0001,
 
         /// <summary>不需要确认的数据上报</summary>
-        UnconfirmedDataUp = 0x40,
+        UnconfirmedDataUp = 0b_0010,
 
         /// <summary>不需要确认的数据下发</summary>
-        UnconfirmedDataDown = 0x60,
+        UnconfirmedDataDown = 0b_0011,
 
         /// <summary>需要确认的数据上报</summary>
-        ConfirmedDataUp = 0x80,
+        ConfirmedDataUp = 0b_0100,
 
         /// <summary>需要确认的数据下发</summary>
-        ConfirmedDataDown = 0xA0,
+        ConfirmedDataDown = 0b_0101,
 
         /// <summary>保留内容</summary>
-        RFU = 0xC0,
+        RFU = 0b_0110,
 
         /// <summary>专有消息，用于实现非标准消息格式</summary>
-        Proprietary = 0xE0,
+        Proprietary = 0b_0111,
     }
 }
