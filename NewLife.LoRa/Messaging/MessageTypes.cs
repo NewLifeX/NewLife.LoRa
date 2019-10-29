@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NewLife.LoRa.Messaging
 {
     /// <summary>MAC消息类型</summary>
-    public enum MacType : Byte
+    public enum MessageTypes : Byte
     {
         /// <summary>加网请求</summary>
         JoinRequest = 0b_0000,

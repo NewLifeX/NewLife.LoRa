@@ -76,7 +76,7 @@ namespace NewLife.LORAServer
                     if (!dp.Data.IsNullOrEmpty())
                     {
                         Packet pk = dp.Data.ToBase64();
-                        Console.WriteLine(pk.ToHex());
+                        Console.WriteLine(pk.ToHex(64));
                         Console.WriteLine(pk.ToStr());
 
                         var pm = new PHYMessage();

@@ -54,7 +54,7 @@ namespace NewLife.LoRa.Messaging
 
         #region 扩展属性
         /// <summary>消息类型</summary>
-        public MacType Type { get; set; }
+        public MessageTypes Type { get; set; }
 
         /// <summary>RFU</summary>
         public Byte RFU { get; set; }
@@ -88,11 +88,6 @@ namespace NewLife.LoRa.Messaging
         /// <returns>是否成功</returns>
         public virtual Boolean Read(Stream stream, Object context)
         {
-            //MHDR = (Byte)stream.ReadByte();
-            //DevAddr = stream.ReadBytes(4).ToUInt32();
-            //FCtrl = (Byte)stream.ReadByte();
-            //FCnt = stream.ReadBytes(2).ToUInt16();
-
             var reader = context as BinaryReader ?? new BinaryReader(stream);
             MHDR = reader.ReadByte();
             DevAddr = reader.ReadUInt32();
@@ -100,7 +95,7 @@ namespace NewLife.LoRa.Messaging
             FCnt = reader.ReadUInt16();
 
             // MHDR 扩展
-            Type = (MacType)((MHDR & 0b_1110_0000) >> 5);
+            Type = (MessageTypes)((MHDR & 0b_1110_0000) >> 5);
             RFU = (Byte)((MHDR & 0b_0001_1100) >> 2);
             Major = (Byte)((MHDR & 0b_0000_0011) >> 0);
 
@@ -111,12 +106,33 @@ namespace NewLife.LoRa.Messaging
             FPending = (FCtrl & 0b_0001_0000) > 0;
             var optsLen = FCtrl & 0b_0000_1111;
 
-            FOpts = reader.ReadBytes(optsLen);
+            if (optsLen > 0) FOpts = reader.ReadBytes(optsLen);
             FPort = reader.ReadUInt16();
 
-            Payload = stream.ReadBytes();
+            var dataLen = stream.Length - stream.Position;
+            if (dataLen > 4) Payload = stream.ReadBytes(dataLen - 4);
+
+            MIC = reader.ReadUInt32();
+
+            Console.WriteLine(Payload.ToHex(64));
 
             return true;
+        }
+
+        public Byte[] Decrypt(byte[] nwkSkey, byte[] appSkey)
+        {
+            if (FPort == 0)
+            {
+                if (nwkSkey == null) throw new ArgumentNullException(nameof(nwkSkey));
+
+            }
+            else
+            {
+                if (appSkey == null) throw new ArgumentNullException(nameof(appSkey));
+
+            }
+
+            return null;
         }
 
         /// <summary>把消息写入到数据流中</summary>
