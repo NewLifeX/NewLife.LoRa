@@ -35,12 +35,12 @@ namespace NewLife.LoRa.Security
         /// <param name="address">帧地址</param>
         /// <param name="dir">方向，0上行，1下行</param>
         /// <param name="sequenceCounter">帧序号计数器</param>
-        public UInt32 LoRaMacComputeMic(Byte[] buffer, Byte[] key, uint address, byte dir, uint sequenceCounter)
+        public UInt32 LoRaMacComputeMic(Byte[] buffer, Byte[] key, uint address, Boolean dir, uint sequenceCounter)
         {
             var size = buffer.Length;
 
             var block = new Byte[] { 0x49, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-            block[5] = dir;
+            block[5] = (byte)(dir ? 1 : 0);
 
             block[6] = (byte)((address) & 0xFF);
             block[7] = (byte)((address >> 8) & 0xFF);
@@ -81,7 +81,7 @@ namespace NewLife.LoRa.Security
         /// <param name="address">帧地址</param>
         /// <param name="dir">方向，0上行，1下行</param>
         /// <param name="sequenceCounter">帧序号计数器</param>
-        public Byte[] LoRaMacPayloadEncrypt(Byte[] buffer, Byte[] key, uint address, byte dir, uint sequenceCounter)
+        public Byte[] LoRaMacPayloadEncrypt(Byte[] buffer, Byte[] key, uint address, Boolean dir, uint sequenceCounter)
         {
             var size = buffer.Length;
 
@@ -98,7 +98,7 @@ namespace NewLife.LoRa.Security
             var aBlock = new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             //var sBlock = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-            aBlock[5] = dir;
+            aBlock[5] = (byte)(dir ? 1 : 0);
 
             aBlock[6] = (Byte)((address) & 0xFF);
             aBlock[7] = (Byte)((address >> 8) & 0xFF);
@@ -145,7 +145,7 @@ namespace NewLife.LoRa.Security
         /// <param name="address">帧地址</param>
         /// <param name="dir">方向，0上行，1下行</param>
         /// <param name="sequenceCounter">帧序号计数器</param>
-        public Byte[] LoRaMacPayloadDecrypt(Byte[] buffer, Byte[] key, uint address, byte dir, uint sequenceCounter)
+        public Byte[] LoRaMacPayloadDecrypt(Byte[] buffer, Byte[] key, uint address, Boolean dir, uint sequenceCounter)
         {
             return LoRaMacPayloadEncrypt(buffer, key, address, dir, sequenceCounter);
         }

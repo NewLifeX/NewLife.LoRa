@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NewLife.Data;
+using NewLife.LoRa.Security;
 using NewLife.Serialization;
 
 namespace NewLife.LoRa.Messaging
@@ -119,20 +116,26 @@ namespace NewLife.LoRa.Messaging
             return true;
         }
 
-        public Byte[] Decrypt(byte[] nwkSkey, byte[] appSkey)
+        /// <summary>解密数据</summary>
+        /// <param name="nwkSkey"></param>
+        /// <param name="appSkey"></param>
+        /// <returns></returns>
+        public Byte[] Decrypt(Byte[] nwkSkey, Byte[] appSkey)
         {
+            var crypto = new LoRaMacCrypto();
+
             if (FPort == 0)
             {
                 if (nwkSkey == null) throw new ArgumentNullException(nameof(nwkSkey));
 
+                return crypto.LoRaMacPayloadDecrypt(Payload.ToArray(), nwkSkey, DevAddr, true, FCnt);
             }
             else
             {
                 if (appSkey == null) throw new ArgumentNullException(nameof(appSkey));
 
+                return crypto.LoRaMacPayloadDecrypt(Payload.ToArray(), appSkey, DevAddr, true, FCnt);
             }
-
-            return null;
         }
 
         /// <summary>把消息写入到数据流中</summary>
