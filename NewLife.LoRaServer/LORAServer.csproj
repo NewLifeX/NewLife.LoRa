@@ -12,7 +12,10 @@
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <OutputPath>..\BinServer</OutputPath>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.0'">

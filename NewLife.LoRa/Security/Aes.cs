@@ -23,7 +23,7 @@ namespace NewLife.LoRa.Security
         }
     }
 
-    class Aes
-    {
-    }
+    //class Aes
+    //{
+    //}
 }

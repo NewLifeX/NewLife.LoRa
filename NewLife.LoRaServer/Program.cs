@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography;
 using NewLife.Agent;
 using NewLife.Data;
 using NewLife.Log;
 using NewLife.LoRa;
 using NewLife.LoRa.Messaging;
 using NewLife.LoRa.Models;
+using NewLife.LoRa.Security;
 using NewLife.Serialization;
 
 namespace NewLife.LORAServer
@@ -22,6 +25,7 @@ namespace NewLife.LORAServer
                 DisplayName = "LoRa服务器";
 
                 AddMenu('t', "测试数据", Test);
+                AddMenu('s', "测试加密", Test2);
             }
 
             private LoRaServer _Server;
@@ -88,6 +92,18 @@ namespace NewLife.LORAServer
 
                 var tx = TxPacket.Read(js["txpk"]);
                 if (tx != null) Console.WriteLine(tx.ToJson(true));
+            }
+
+            private void Test2()
+            {
+                var crypto = new LoRaMacCrypto();
+
+                var buf = "C86B3BF3".ToHex();
+                var key = "A499E0B73311D0782EC80C98FEC83B8E".ToHex();
+                var rs = crypto.PayloadDecrypt(buf, key, 0x77F7EEF0, true, 0x20);
+
+                XTrace.WriteLine(rs.ToHex());
+                Debug.Assert(rs.ToHex() == "095500DB");
             }
         }
     }

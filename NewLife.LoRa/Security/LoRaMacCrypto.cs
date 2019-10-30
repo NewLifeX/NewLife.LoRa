@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Security.Cryptography;
+using NewLife.Log;
 
 namespace NewLife.LoRa.Security
 {
-    class LoRaMacCrypto
+    /// <summary>LoRaMac加解密</summary>
+    public class LoRaMacCrypto
     {
         #region 属性
         #endregion
@@ -51,8 +54,18 @@ namespace NewLife.LoRa.Security
         {
             var size = buffer.Length;
 
-            var ctx = new aes_context();
-            ctx.SetKey(key);
+            //var ctx = new aes_context();
+            //ctx.SetKey(key);
+
+            using var aes = Aes.Create();
+            aes.Key = key;
+            aes.IV = new Byte[16];
+            aes.Mode = CipherMode.ECB;
+            aes.Padding = PaddingMode.None;
+
+            XTrace.WriteLine("{0} {1}", aes.Mode, aes.Padding);
+
+            var dec = aes.CreateDecryptor();
 
             var aBlock = new Byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
             //var sBlock = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -72,12 +85,14 @@ namespace NewLife.LoRa.Security
             var encBuffer = new Byte[size];
             Byte bufferIndex = 0;
             UInt16 ctr = 1;
+            var sBlock = new Byte[16];
             while (size >= 16)
             {
                 aBlock[15] = (Byte)((ctr) & 0xFF);
                 ctr++;
                 //aes_encrypt(aBlock, sBlock, &AesContext);
-                var sBlock = ctx.Encrypt(aBlock, 16);
+                //var sBlock = ctx.Encrypt(aBlock, 16);
+                dec.TransformBlock(aBlock, 0, aBlock.Length, sBlock, sBlock.Length);
                 for (var i = 0; i < 16; i++)
                 {
                     encBuffer[bufferIndex + i] = (Byte)(buffer[bufferIndex + i] ^ sBlock[i]);
@@ -90,7 +105,8 @@ namespace NewLife.LoRa.Security
             {
                 aBlock[15] = (Byte)((ctr) & 0xFF);
                 //aes_encrypt(aBlock, sBlock, &AesContext);
-                var sBlock = ctx.Encrypt(aBlock, 16);
+                //var sBlock = ctx.Encrypt(aBlock, 16);
+                sBlock = dec.TransformFinalBlock(aBlock, 0, aBlock.Length);
                 for (var i = 0; i < size; i++)
                 {
                     encBuffer[bufferIndex + i] = (Byte)(buffer[bufferIndex + i] ^ sBlock[i]);
