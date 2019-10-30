@@ -40,7 +40,7 @@ namespace NewLife.LoRa.Messaging
         public Packet FOpts { get; set; }
 
         /// <summary>MAC数据通道号</summary>
-        public UInt16 FPort { get; set; }
+        public Byte FPort { get; set; }
 
         /// <summary>MAC层负载，加密</summary>
         public Packet Payload { get; set; }
@@ -104,14 +104,14 @@ namespace NewLife.LoRa.Messaging
             var optsLen = FCtrl & 0b_0000_1111;
 
             if (optsLen > 0) FOpts = reader.ReadBytes(optsLen);
-            FPort = reader.ReadUInt16();
+            FPort = reader.ReadByte();
 
             var dataLen = stream.Length - stream.Position;
             if (dataLen > 4) Payload = stream.ReadBytes(dataLen - 4);
 
             MIC = reader.ReadUInt32();
 
-            Console.WriteLine(Payload.ToHex(64));
+            //Console.WriteLine(Payload.ToHex(64));
 
             return true;
         }
