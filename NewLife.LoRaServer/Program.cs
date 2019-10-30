@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Cryptography;
 using NewLife.Agent;
 using NewLife.Data;
 using NewLife.Log;
@@ -26,6 +25,7 @@ namespace NewLife.LORAServer
 
                 AddMenu('t', "测试数据", Test);
                 AddMenu('s', "测试加密", Test2);
+                AddMenu('d', "测试解密", Test3);
             }
 
             private LoRaServer _Server;
@@ -87,6 +87,12 @@ namespace NewLife.LORAServer
                         pm.Read(pk.GetStream(), null);
 
                         Console.WriteLine(pm.ToJson(true));
+
+                        var nwkSkey = "4B463EFED018F099FE3F05108618FDDA".ToHex();
+                        var appSkey = "19E52095515EBD0C2FD596DD96FD0833".ToHex();
+                        var buf = pm.Decrypt(nwkSkey, appSkey);
+                        Console.WriteLine(buf.ToHex());
+                        Console.WriteLine(buf.ToStr());
                     }
                 }
 
@@ -96,15 +102,73 @@ namespace NewLife.LORAServer
 
             private void Test2()
             {
+                var ss = new[] {
+                "gGMAEHCAGAcB0kSc/G+ehD4Z93QxnfV6P0i0dO2SSrCsl5ZdXI8rRQzT3W3Ej1mHTO8=",
+                "gLcAEHCANQ4BsLzPNq3dJKRyAtgGjfP0kyQgN4RWzRAcO0LPfU1J0L6VszQJGwANg7Y=",
+                "gFQAEHCAWgMBpcwy1MAkLGFPRII9hUlB4+3+O1d0p2ZOgsHu21BAikAOYtjTh60Dx+s=",
+                "gHMAEHCAEAsBcdf9lNe4FL+Hvs8lUNpie7u10tSOAWqiPyQVyLTx6BbQDWehC6qQa+0=",
+                "gHMAEHCADwsB3P7NADg1Rsj2FLImBtz/9e3hVNzniwoMGUhlyC4KI8Lsvt1VKSuSyVM=",
+                "gF0AEHCATgQBdf0x8gNiz9fqC13IfE79yqd4SyMtTDyk02gQoW317HwJ6L1zt8rXAIc=",
+                "gF0AEHCATwQB/F5MgTRSRaqVjS9SZjt1rQYdPtl4hSL2Tox4Y8TRW4yatCH/7l75/Q4=",
+                };
+                var dic = new Dictionary<String, String>
+                {
+                    ["701000B7"] = "5F6C965F3AA482AF2EF8C3FBF63661FE",
+                    ["70100063"] = "1BA6731021ED686C3643756311DD23CC",
+                    ["701000A4"] = "ED347BE6FDDF2BCF749354694285841D",
+                    ["7010005D"] = "8598B09A8CD56BC67AA55C08CEDC183E",
+                    ["70100073"] = "19E52095515EBD0C2FD596DD96FD0833",
+                    ["70100054"] = "53BBDC505119EB63BCB17CD15B24AD45",
+                    ["70100061"] = "778960777F7B4CBAC857C06DEE818844",
+                    ["701000B1"] = "35D43942B95DC82B80A79BC4BAD9457E",
+                };
+
+                foreach (var item in ss)
+                {
+                    Console.WriteLine();
+                    Packet pk = item.ToBase64();
+
+                    var pm = new PHYMessage();
+                    pm.Read(pk.GetStream(), null);
+                    Console.WriteLine(pm.Payload.ToHex(64));
+
+                    var addr = pm.DevAddr.ToString("X8");
+                    //Console.WriteLine(pm.Type);
+                    Console.WriteLine("{0} {1} FCnt={2} FPort={3}", addr, pm.Type, pm.FCnt, pm.FPort);
+                    //Console.WriteLine(pm.ToJson(true));
+
+                    //var nwkSkey = "4B463EFED018F099FE3F05108618FDDA".ToHex();
+                    //var appSkey = "19E52095515EBD0C2FD596DD96FD0833".ToHex();
+                    var appSkey = dic[addr].ToHex();
+                    var buf = pm.Decrypt(null, appSkey);
+                    Console.WriteLine(buf.ToHex());
+                    //Console.WriteLine(buf.ToStr());
+                }
+
+                //var crypto = new LoRaMacCrypto();
+
+                //var buf = "C86B3BF3".ToHex();
+                //var key = "A499E0B73311D0782EC80C98FEC83B8E".ToHex();
+                //var rs = crypto.PayloadDecrypt(buf, key, 0x77F7EEF0, true, 0x20);
+
+                //var str = rs.ToHex();
+                //XTrace.WriteLine(str);
+                //Debug.Assert(str == "B93747B2");
+            }
+
+            private void Test3()
+            {
                 var crypto = new LoRaMacCrypto();
 
-                var buf = "C86B3BF3".ToHex();
+                //var buf = "C86B3BF3".ToHex();
+                var buf = "58E1369B".ToHex();
                 var key = "A499E0B73311D0782EC80C98FEC83B8E".ToHex();
-                var rs = crypto.PayloadDecrypt(buf, key, 0x77F7EEF0, true, 0x20);
+                var rs = crypto.PayloadDecrypt(buf, key, 0x77F7EEF0, true, 0x0142);
 
                 var str = rs.ToHex();
                 XTrace.WriteLine(str);
-                Debug.Assert(str == "B93747B2");
+                //Debug.Assert(str == "B93747B2");
+                Debug.Assert(str == "092200DB");
             }
         }
     }
