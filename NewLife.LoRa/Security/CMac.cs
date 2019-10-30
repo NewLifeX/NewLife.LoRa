@@ -4,7 +4,7 @@ namespace NewLife.LoRa.Security
 {
     class AES_CMAC_CTX
     {
-        public aes_context rijndael;
+        public Aes128 rijndael;
 
         /// <summary>16</summary>
         public Byte[] X;
