@@ -128,13 +128,13 @@ namespace NewLife.LoRa.Messaging
             {
                 if (nwkSkey == null) throw new ArgumentNullException(nameof(nwkSkey));
 
-                return crypto.LoRaMacPayloadDecrypt(Payload.ToArray(), nwkSkey, DevAddr, true, FCnt);
+                return crypto.PayloadDecrypt(Payload.ToArray(), nwkSkey, DevAddr, true, FCnt);
             }
             else
             {
                 if (appSkey == null) throw new ArgumentNullException(nameof(appSkey));
 
-                return crypto.LoRaMacPayloadDecrypt(Payload.ToArray(), appSkey, DevAddr, true, FCnt);
+                return crypto.PayloadDecrypt(Payload.ToArray(), appSkey, DevAddr, true, FCnt);
             }
         }
 
