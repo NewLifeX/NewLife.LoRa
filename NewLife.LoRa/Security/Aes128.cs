@@ -272,7 +272,7 @@ namespace NewLife.LoRa.Security
         {
             for (var i = 0; i < data.Length; i++)
             {
-                data[i] ^= key[i];
+                data[i] ^= key[keyOffset + i];
             }
 
             //#if defined( HAVE_UINT_32T )

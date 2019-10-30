@@ -102,8 +102,9 @@ namespace NewLife.LORAServer
                 var key = "A499E0B73311D0782EC80C98FEC83B8E".ToHex();
                 var rs = crypto.PayloadDecrypt(buf, key, 0x77F7EEF0, true, 0x20);
 
-                XTrace.WriteLine(rs.ToHex());
-                Debug.Assert(rs.ToHex() == "095500DB");
+                var str = rs.ToHex();
+                XTrace.WriteLine(str);
+                Debug.Assert(str == "B93747B2");
             }
         }
     }
