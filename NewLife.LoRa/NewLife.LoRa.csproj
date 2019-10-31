@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0;net40</TargetFrameworks>
     <AssemblyTitle>新生命LoRa协议</AssemblyTitle>
-    <Description>物联网通信协议LoRa</Description>
+    <Description>超低功耗的物联网远程通信协议LoRaWAN</Description>
     <Company>新生命开发团队</Company>
     <Copyright>版权所有(C) 新生命开发团队 2002~2019</Copyright>
     <Version>1.0.2019.1024</Version>
