@@ -126,6 +126,10 @@ namespace NewLife.LoRa.Security
         /// <param name="sequenceCounter">帧序号计数器</param>
         public Byte[] PayloadDecrypt(Byte[] buffer, Byte[] key, UInt32 address, Boolean dir, UInt32 sequenceCounter) => PayloadEncrypt(buffer, key, address, dir, sequenceCounter);
 
+        /// <summary>计算组网校验码</summary>
+        /// <param name="buffer"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public UInt32 JoinComputeMic(Byte[] buffer, Byte[] key)
         {
             var ctx = new AES_CMAC_CTX();
@@ -136,6 +140,10 @@ namespace NewLife.LoRa.Security
             return ctx.Final();
         }
 
+        /// <summary>组网解密</summary>
+        /// <param name="buffer"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public Byte[] JoinDecrypt(Byte[] buffer, Byte[] key)
         {
             var size = buffer.Length;
@@ -158,6 +166,10 @@ namespace NewLife.LoRa.Security
             return decBuffer;
         }
 
+        /// <summary>组网加密</summary>
+        /// <param name="buffer"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public Byte[] JoinEncrypt(Byte[] buffer, Byte[] key)
         {
             var size = buffer.Length;
@@ -180,6 +192,12 @@ namespace NewLife.LoRa.Security
             return decBuffer;
         }
 
+        /// <summary>组网计算密钥</summary>
+        /// <param name="key"></param>
+        /// <param name="appNonce"></param>
+        /// <param name="devNonce"></param>
+        /// <param name="nwkSKey"></param>
+        /// <param name="appSKey"></param>
         public void JoinComputeSKeys(Byte[] key, Byte[] appNonce, UInt16 devNonce, out Byte[] nwkSKey, out Byte[] appSKey)
         {
             var aes = new Aes128();
