@@ -9,46 +9,18 @@ using NewLife.Serialization;
 
 namespace NewLife.LoRa
 {
-    /// <summary>MQTT服务端</summary>
+    /// <summary>LoRa服务端</summary>
     public class LoRaServer : NetServer<LoRaSession>
     {
-        /// <summary>启动</summary>
-        protected override void OnStart()
-        {
-            //Add(new MqttCodec());
-
-            base.OnStart();
-        }
     }
 
-    /// <summary>会话</summary>
+    /// <summary>LoRa会话</summary>
     public class LoRaSession : NetSession
     {
-        private static IDictionary<UInt32, Byte[]> _appkeys;
-
-        static LoRaSession()
-        {
-            var dic = new Dictionary<String, String>
-            {
-                ["701000B7"] = "5F6C965F3AA482AF2EF8C3FBF63661FE",
-                ["70100063"] = "1BA6731021ED686C3643756311DD23CC",
-                ["701000A4"] = "ED347BE6FDDF2BCF749354694285841D",
-                ["7010005D"] = "8598B09A8CD56BC67AA55C08CEDC183E",
-                ["70100073"] = "19E52095515EBD0C2FD596DD96FD0833",
-                ["70100054"] = "53BBDC505119EB63BCB17CD15B24AD45",
-                ["70100061"] = "778960777F7B4CBAC857C06DEE818844",
-                ["701000B1"] = "35D43942B95DC82B80A79BC4BAD9457E",
-            };
-
-            _appkeys = dic.ToDictionary(e => e.Key.ToHex().ToUInt32(0, false), e => e.Value.ToHex());
-        }
-
         /// <summary>收到数据</summary>
         /// <param name="e"></param>
         protected override void OnReceive(ReceivedEventArgs e)
         {
-            //base.OnReceive(e);
-
             var msg = new LoRaMessage();
             msg.Read(e.Packet.GetStream(), null);
 
@@ -77,6 +49,7 @@ namespace NewLife.LoRa
             Send(rs.ToPacket());
         }
 
+        #region 上行数据
         /// <summary>上行数据</summary>
         /// <param name="data"></param>
         protected virtual void PushData(Packet data)
@@ -123,11 +96,22 @@ namespace NewLife.LoRa
         /// <param name="ext"></param>
         protected virtual void OnPushMessage(PHYMessage pm, RxPacket packet, IDictionary<String, Object> ext)
         {
-            if (pm.FPort > 0 && _appkeys.TryGetValue(pm.DevAddr, out var key))
-            {
-                var buf = pm.Decrypt(null, key);
-                WriteLog("解密：{0}", buf.ToHex());
-            }
+            //if (pm.FPort > 0 && _appkeys.TryGetValue(pm.DevAddr, out var key))
+            //{
+            //    var buf = pm.Decrypt(null, key);
+            //    WriteLog("解密：{0}", buf.ToHex());
+            //}
         }
+        #endregion
+
+        #region 下行数据
+        /// <summary>拉取数据</summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected virtual Packet PullData(Packet data)
+        {
+            return null;
+        }
+        #endregion
     }
 }
