@@ -82,7 +82,7 @@ namespace NewLife.LoRa.Security
             aBlock[11] = (Byte)((sequenceCounter >> 8) & 0xFF);
             aBlock[12] = (Byte)((sequenceCounter >> 16) & 0xFF);
             aBlock[13] = (Byte)((sequenceCounter >> 24) & 0xFF);
-            XTrace.WriteLine("aBlock: {0}", aBlock.ToHex());
+            //XTrace.WriteLine("aBlock: {0}", aBlock.ToHex());
 
             var encBuffer = new Byte[size];
             Byte bufferIndex = 0;
