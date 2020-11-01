@@ -14,9 +14,9 @@ namespace NewLife.LORAServer
 {
     class Program
     {
-        static void Main(String[] args) => new MyService().Main();
+        static void Main(String[] args) => new MyService().Main(args);
 
-        class MyService : AgentServiceBase<MyService>
+        class MyService : ServiceBase
         {
             public MyService()
             {
