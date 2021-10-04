@@ -6,8 +6,8 @@
     <Description>超低功耗的物联网远程通信协议LoRaWAN</Description>
     <Company>新生命开发团队</Company>
     <Copyright>版权所有(C) 新生命开发团队 2002~2019</Copyright>
-    <Version>1.0.2019.1024</Version>
-    <FileVersion>1.0.2019.1024</FileVersion>
+    <Version>1.0.2021.1004</Version>
+    <FileVersion>1.0.2021.1004</FileVersion>
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <OutputPath>..\Bin</OutputPath>
@@ -57,7 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewLife.Core" Version="8.10.2020.1101" />
+    <PackageReference Include="NewLife.Core" Version="8.11.2021.1001" />
   </ItemGroup>
 
 </Project>

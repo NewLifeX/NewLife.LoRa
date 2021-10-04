@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Security.Cryptography;
 using NewLife.Log;
+using NewLife;
+using NewLife.Security;
+using NewLife.IO;
+using System.IO;
 
 namespace NewLife.LoRa.Security
 {
@@ -160,7 +164,11 @@ namespace NewLife.LoRa.Security
             {
                 //aes_encrypt(buffer + 16, decBuffer + 16, &AesContext);
                 var decBuffer2 = aes.Encrypt(buffer.ReadBytes(16), 16);
-                decBuffer = decBuffer.Combine(decBuffer2);
+                //decBuffer = decBuffer.Combine(decBuffer2);
+                var ms = new MemoryStream();
+                ms.Write(decBuffer);
+                ms.Write(decBuffer2);
+                decBuffer = ms.ToArray();
             }
 
             return decBuffer;
@@ -186,7 +194,11 @@ namespace NewLife.LoRa.Security
             {
                 //aes_decrypt(buffer + 16, encBuffer + 16, &AesContext);
                 var decBuffer2 = aes.Decrypt(buffer.ReadBytes(16), 16);
-                decBuffer = decBuffer.Combine(decBuffer2);
+                //decBuffer = decBuffer.Combine(decBuffer2);
+                var ms = new MemoryStream();
+                ms.Write(decBuffer);
+                ms.Write(decBuffer2);
+                decBuffer = ms.ToArray();
             }
 
             return decBuffer;
