@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0;net40</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <AssemblyTitle>新生命LoRa协议</AssemblyTitle>
     <Description>超低功耗的物联网远程通信协议LoRaWAN</Description>
     <Company>新生命开发团队</Company>
-    <Copyright>版权所有(C) 新生命开发团队 2002~2021</Copyright>
-    <Version>1.0.2021.1204</Version>
-    <FileVersion>1.0.2021.1204</FileVersion>
+    <Copyright>版权所有(C) 新生命开发团队 2002~2022</Copyright>
+    <Version>1.0.2022.0101</Version>
+    <FileVersion>1.0.2022.0101</FileVersion>
     <AssemblyVersion>1.0.*</AssemblyVersion>
     <Deterministic>false</Deterministic>
     <OutputPath>..\..\Bin</OutputPath>
@@ -62,7 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NewLife.Core" Version="8.11.2021.1204" />
+    <PackageReference Include="NewLife.Core" Version="9.0.2022.101" />
   </ItemGroup>
 
 </Project>
