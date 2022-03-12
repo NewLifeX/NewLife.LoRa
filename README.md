@@ -1,4 +1,12 @@
-﻿## LoRaWAN
+﻿# NewLife.LoRa - LoRa协议
+
+![GitHub top language](https://img.shields.io/github/languages/top/newlifex/newlife.lora?logo=github)
+![GitHub License](https://img.shields.io/github/license/newlifex/newlife.lora?logo=github)
+![Nuget Downloads](https://img.shields.io/nuget/dt/newlife.lora?logo=nuget)
+![Nuget](https://img.shields.io/nuget/v/newlife.lora?logo=nuget)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/newlife.lora?label=dev%20nuget&logo=nuget)
+
+## LoRaWAN
 超低功耗的物联网远程通信协议LoRaWAN，包括服务端和Web管理平台。  
 LoRa是一种低功耗远程无线通信技术。  
 LoRa特点：远距离、低功耗、多节点、低成本,抗扰特性,同时LoRa低速率,小数据传输  
