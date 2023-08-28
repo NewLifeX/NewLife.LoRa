@@ -3,6 +3,8 @@ name: publish-beta
 on:
   push:
     branches: [ master ]
+    paths:
+        - 'NewLife.LoRa/**'
   workflow_dispatch:
 
 jobs:
@@ -15,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Restore
       run: |
         dotnet restore NewLife.LoRa/NewLife.LoRa.csproj
@@ -24,5 +26,5 @@ jobs:
         dotnet pack --no-restore --version-suffix $(date "+%Y.%m%d-beta%H%M") -c Release -o out NewLife.LoRa/NewLife.LoRa.csproj
     - name: Publish
       run: |
-        dotnet nuget push ./out/*.nupkg --skip-duplicate --source https://nuget.pkg.github.com/NewLifeX/index.json --api-key ${{ github.token }}
+        # dotnet nuget push ./out/*.nupkg --skip-duplicate --source https://nuget.pkg.github.com/NewLifeX/index.json --api-key ${{ github.token }}
         dotnet nuget push ./out/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.nugetKey }}
