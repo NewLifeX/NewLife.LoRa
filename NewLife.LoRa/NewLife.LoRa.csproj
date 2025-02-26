@@ -5,7 +5,7 @@
     <AssemblyTitle>新生命LoRa协议</AssemblyTitle>
     <Description>超低功耗的物联网远程通信协议LoRaWAN</Description>
     <Company>新生命开发团队</Company>
-    <Copyright>©2002-2023 新生命开发团队</Copyright>
+    <Copyright>©2002-2025 新生命开发团队</Copyright>
     <VersionPrefix>1.1</VersionPrefix>
     <VersionSuffix>$([System.DateTime]::Now.ToString(`yyyy.MMdd`))</VersionSuffix>
     <Version>$(VersionPrefix).$(VersionSuffix)</Version>
