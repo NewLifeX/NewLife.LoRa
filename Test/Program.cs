@@ -1,36 +1,29 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using NewLife.Caching;
 using NewLife.Log;
-using NewLife.Reflection;
-using NewLife.Serialization;
 
-namespace Test
+namespace Test;
+
+class Program
 {
-    class Program
+    static void Main(String[] args)
     {
-        static void Main(String[] args)
+        XTrace.UseConsole();
+
+        try
         {
-            XTrace.UseConsole();
-
-            try
-            {
-                Test1();
-            }
-            catch (Exception ex)
-            {
-                XTrace.WriteException(ex);
-            }
-
-            Console.WriteLine("OK");
-            Console.Read();
+            Test1();
+        }
+        catch (Exception ex)
+        {
+            XTrace.WriteException(ex);
         }
 
-        static void Test1()
-        {
+        Console.WriteLine("OK");
+        Console.Read();
+    }
 
-        }
+    static void Test1()
+    {
+
     }
 }
